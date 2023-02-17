@@ -61,7 +61,13 @@ def _run_activation_test(
     torch_z, torch_grad = _z_grad_ground_truth(X, torch_func())
     user_z = mlcv_z_func(X)
     user_grad = mlcv_grad_func(user_z)
+
+    print(f"{user_z = }")
+    print(f"{torch_z = }")
     assert np.allclose(user_z, torch_z)
+
+    print(f"{user_grad = }")
+    print(f"{torch_grad = }")
     assert np.allclose(user_grad, torch_grad)
 
 
