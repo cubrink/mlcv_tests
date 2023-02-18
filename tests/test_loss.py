@@ -11,15 +11,15 @@ def test_l2():
 
     size=1 b/c scalar output is expected for hw1.
     """
-    def sqrt_MSE(input: tensor, target: tensor) -> tensor:
-        loss = nn.MSELoss(reduce=False)
-        return torch.sqrt(loss(input, target))
+    def sqrt_MSE(Y_hat: tensor, Y: tensor) -> tensor:
+        loss = nn.MSELoss(reduction='sum')
+        return torch.sqrt(loss(Y_hat, Y))
 
     _run_loss_test(
         torch_func=sqrt_MSE,
         mlcv_z_func=losses.l2,
         mlcv_grad_func=losses.l2_grad,
-        size=1
+        size=3
     )
 
 
@@ -76,6 +76,10 @@ def _z_grad_ground_truth(Y: np.array, Y_hat: np.array, func: nn.Module) -> tuple
     z.sum().backward()
 
     grad = Y_hat.grad.detach().numpy()
-    z = z.detach().numpy()
+    z = z.detach().numpy().item()
 
     return z, grad
+
+
+if __name__ == '__main__':
+    test_l2()
